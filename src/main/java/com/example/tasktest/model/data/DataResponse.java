@@ -16,7 +16,7 @@ public class DataResponse extends BaseResponse {
     public DataResponse() {
     }
 
-    public static DataResponse success(LinkedHashMap<Character, Integer> outputMap) {
+    public static DataResponse success(Map<Character, Integer> outputMap) {
         DataResponse response = new DataResponse();
 
         response.setResultMap(outputMap);

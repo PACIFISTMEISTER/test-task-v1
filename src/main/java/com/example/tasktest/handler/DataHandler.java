@@ -25,26 +25,27 @@ public class DataHandler {
 
     public DataResponse splitData(DataRequest request) {
         try {
-            Map<Character, Integer> resultMap = new LinkedHashMap<>();
+            Map<Character, Integer> characterToFrequency = new LinkedHashMap<>();
             var str = request.getData();
 
+            Map<Character, Integer> finalCharacterToFrequency = characterToFrequency;
             str.chars().mapToObj(ch -> (char) ch)
                     .forEach(key -> {
-                                if (!resultMap.containsKey(key)) {
-                                    resultMap.put(key, 1);
+                                if (!finalCharacterToFrequency.containsKey(key)) {
+                                    finalCharacterToFrequency.put(key, 1);
                                 } else {
-                                    Integer value = resultMap.get(key);
-                                    resultMap.put(key, ++value);
+                                    Integer value = finalCharacterToFrequency.get(key);
+                                    finalCharacterToFrequency.put(key, ++value);
                                 }
                             }
                     );
 
-            var outputMap = resultMap.entrySet().stream()
+            characterToFrequency = characterToFrequency.entrySet().stream()
                     .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                     .collect(Collectors.toMap(
                             Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
-            return DataResponse.success(outputMap);
+            return DataResponse.success(characterToFrequency);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
 
